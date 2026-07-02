@@ -1,0 +1,142 @@
+{
+  "image_api": {
+    "type": "object",
+    "description": "生图接口配置",
+    "hint": "从 AstrBot 已配置的模型提供商里选择图片模型；主模型失败后可自动切到回退模型。",
+    "items": {
+      "provider_id": {
+        "type": "string",
+        "description": "主图片模型提供商",
+        "hint": "从 AstrBot 已配置的模型提供商里选择你保存的图片模型，例如 GPT image2。",
+        "default": "",
+        "_special": "select_provider"
+      },
+      "fallback_provider_id": {
+        "type": "string",
+        "description": "回退图片模型提供商",
+        "hint": "主图片模型失败后自动尝试这个提供商，也从 AstrBot 已配置的模型提供商里选择。",
+        "default": "",
+        "_special": "select_provider"
+      },
+      "timeout_seconds": {
+        "type": "int",
+        "description": "文生图超时时间",
+        "hint": "会自动限制在 85 秒内，避免 AstrBot 工具层超时。",
+        "default": 80
+      },
+      "edits_timeout_seconds": {
+        "type": "int",
+        "description": "参考图生图超时时间",
+        "hint": "会自动限制在 70 秒内。",
+        "default": 65
+      },
+      "fallback_to_generations_when_reference_fails": {
+        "type": "bool",
+        "description": "参考图失败时是否允许无参考图降级",
+        "hint": "默认关闭，避免锁脸/锁物件失败后生成跑偏。接口级回退仍然会继续尝试。",
+        "default": false
+      }
+    }
+  },
+  "camera_style": {
+    "type": "object",
+    "description": "画面风格规则",
+    "items": {
+      "default_ratio": {
+        "type": "string",
+        "description": "默认画幅",
+        "hint": "3:4 或 4:3",
+        "default": "3:4"
+      },
+      "allow_face": {
+        "type": "bool",
+        "description": "是否允许露脸",
+        "hint": "按需开启；关闭后仍可能按提示生成物件。",
+        "default": true
+      },
+      "allow_hands": {
+        "type": "bool",
+        "description": "是否允许露手",
+        "hint": "开启后会加入手部质量约束。",
+        "default": true
+      },
+      "phone_photo_texture": {
+        "type": "string",
+        "description": "手机随手拍质感",
+        "hint": "控制光线、构图、真实生活感。",
+        "default": "真实手机随手拍质感，电影级色彩美感，自然曝光，轻微胶片噪点，光影层次丰富，生活感构图，绝不摆拍，绝不过度精修"
+      },
+      "body_texture_rule": {
+        "type": "string",
+        "description": "人物质感规则",
+        "hint": "用于稳定沈星回 3D 建模CG质感。",
+        "default": "人物质感必须稳定等同于恋与深空游戏内沈星回的高质量3D建模CG，不能在真人写实、AI网红、cosplay和游戏建模之间漂移"
+      },
+      "hand_quality_rule": {
+        "type": "string",
+        "description": "手部质量规则",
+        "hint": "用于减少 AI 假手、多指、短手指。",
+        "default": "沈星回的手修长、冷白、骨节清晰但不过分青筋，手指有力量感，甲型干净漂亮；手部结构必须真实，不要多指、断指、融合手指、畸形关节"
+      },
+      "pose_safety": {
+        "type": "string",
+        "description": "人体结构安全规则",
+        "hint": "控制肩颈、手臂、身体比例。",
+        "default": "人体结构必须真实自然，肩膀、锁骨、脖颈、手臂、手腕位置合理；不要多手、断手、扭曲手臂、头大肩窄、脖子过长"
+      },
+      "rabbit_size_rule": {
+        "type": "string",
+        "description": "兔球球尺寸规则",
+        "hint": "控制兔球球不要迷你化或抱枕化。",
+        "default": "兔球球尺寸：单手可托住的中小号毛绒玩偶，不要迷你化，也不要抱枕化"
+      }
+    }
+  },
+  "reference_library": {
+    "type": "object",
+    "description": "参考库绑定",
+    "items": {
+      "reference_dir": {
+        "type": "string",
+        "description": "参考图库路径",
+        "hint": "只需要填写自己的参考图库根目录。插件会在里面按 reference_hint、文件名关键词和关键词映射找图。",
+        "default": ""
+      },
+      "enable_reference_images": {
+        "type": "bool",
+        "description": "启用参考图",
+        "default": true
+      },
+      "reference_map": {
+        "type": "string",
+        "description": "关键词到文件夹映射",
+        "hint": "可选。每个人按自己的参考库命名填写，例如：脸:我的脸部参考,手:手部参考,兔球球:玩偶参考。不填则主要靠 reference_hint 和文件名搜索。",
+        "default": ""
+      },
+      "primary_keywords": {
+        "type": "string",
+        "description": "主参考文件名关键词",
+        "default": "主参考,完整正面,main",
+        "hint": "用于每个文件夹里挑主参考图，例如主参考、main。"
+      }
+    },
+    "hint": "使用自己的文件夹命名。"
+  },
+  "safety": {
+    "type": "object",
+    "description": "生成安全与调试",
+    "items": {
+      "dry_run_when_no_api": {
+        "type": "bool",
+        "description": "没有可用接口时返回提示词",
+        "default": true
+      },
+      "save_prompt_debug": {
+        "type": "bool",
+        "description": "保存提示词调试文件",
+        "hint": "保存到 data/plugin_data/astrbot_plugin_xiao_hui_camera/prompts",
+        "default": true
+      }
+    }
+  }
+}

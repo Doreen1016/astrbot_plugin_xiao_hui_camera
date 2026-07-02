@@ -1,0 +1,8 @@
+name: astrbot_plugin_xiao_hui_camera
+display_name: 小回相机
+desc: 沈星回专用手机随手拍生图插件，支持参考库链路、AstrBot 图片模型 provider、接口回退和 prompt 调试
+version: v0.2.0
+author: DD & Xavier
+support_platforms:
+  - aiocqhttp
+astrbot_version: ">=4.16.0"
